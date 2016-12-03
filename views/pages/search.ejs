@@ -13,36 +13,109 @@
 
     <main>
         <div class="jumbotron">
-            <h3>Search:</h3>
-                <form method="post" action="/submit">
-                <h5>Type:</h5>
-                <select name="type">
-                  <option value="tweets">Tweets</option>
-                  <option value="users">Users</option>
-                </select>
-                <h5>Keywords: (separate by spaces)</h5>
-                <input type="text" name="keywords" size="75" class="form-control" value= "" >
-                <h5>Username Contains:</h5>
-                <input type="text" name="username" size="75" class="form-control" value= "" >
-                <h5>Retweets:</h5>
-                <input type="text" name="retweets" size="75" class="form-control" value= "" >
-                <h5>Favorites:</h5>
-                <input type="text" name="favorites" size="75" class="form-control" value= "" >
-                <h5>Region:</h5>
-                <input type="text" name="region" size="75" class="form-control" value= "" >
-                <h5>Language:</h5>
-                <input type="text" name="language" size="75" class="form-control" value= "" >
-                <input type="submit" value="Search">
-                </form>
+            <!-- Row for top navigation -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>Type of Search:</h3>
+                    <form method="post" action="/submit">
+                    <select name="type left-side">
+                      <option value="tweets">Tweets</option>
+                      <option value="users">Users</option>
+                    </select>
+                </div>
+                <!-- Interesting queries -->
+                <div class="col-sm-6 text-right">
+                    <h3>Interesting Queries:</h3>
+                    <select name="queries">
+                      <option value="query1">Query 1</option>
+                      <option value="query2">Query 2</option>
+                      <option value="query3">Query 3</option>
+                      <option value="query4">Query 4</option>
+                      <option value="query5">Query 5</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <!-- Key words input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Keywords: (separate by spaces)</h5>
+                    <input type="text" name="keywords" size="75" class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- User name input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Username Contains:</h5>
+                    <input type="text" name="username" size="75" class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- retweets input -->
+            <h5>Retweets:</h5>
+            <div class="row">
+                <div class="col-sm-2 left-side">
+                    <select name="retweet-equality">
+                      <option value="greater-than">Greater than</option>
+                      <option value="less-than">Less than</option>
+                      <option value="equal-to">Equal to</option>
+                    </select>
+                </div>
+                <div class="col-sm-9 right-side">
+                    <input type="number" name="retweets" size="75"class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- favorites input -->
+            <h5>Favorites:</h5>
+            <div class="row">
+                <div class="col-sm-2 left-side">
+                    <select name="favorite-equality">
+                      <option value="greater-than">Greater than</option>
+                      <option value="less-than">Less than</option>
+                      <option value="equal-to">Equal to</option>
+                    </select>
+                </div>
+                <div class="col-sm-9 right-side">
+                    <input type="text" name="favorites" size="75" class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- Region input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Region:</h5>
+                </div>
+            </div>
+
+            <!-- Language input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" name="region" size="75" class="form-control" value= "" >
+                    <h5>Language:</h5>
+                    <select name="language-types">
+                      <option value="english">English</option>
+                      <option value="spanish">Spanish</option>
+                    </select>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- Submit button -->
+            <input type="submit" value="Search">
+            </form>
 
             <h3>Raw Query:</h3>
-                <form method="post" action="/raw_query">
+            <form method="post" action="/raw_query">
+                <input type="text" name="query" size="75" class="form-control" value= "select count (*) as total from TWEET">
 
-
-                <input type="text" name="query" size="75" class="form-control" value= "select count (*) as total from TWEET" >
+                <br />
 
                 <input type="submit" value="Search">
-                </form>
+            </form>
         </div>
     </main>
 
