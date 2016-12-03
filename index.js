@@ -39,10 +39,18 @@ app.get('/search', function(req, res) {
 
 app.post('/submit', function (req, res) {
   var query = null;
-  if (req.body.keywords != null) {
+  //This variable is for seeing if we need to append our first select statement.
+  var exists = false;
+  var query = "SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE ";
+  if (req.body.keywords != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
     var keywordsArray = req.body.keywords.split(" ");
     var arrayLength = keywordsArray.length;
-    var query = "SELECT * FROM Tweet t WHERE ";
     for (var i = 0; i < arrayLength; i++) {
         if (i != 0) {
           query = query + " AND "
@@ -54,7 +62,100 @@ app.post('/submit', function (req, res) {
     console.log("Keywords: " + query);
   }
 
-    if (query != null) {
+  //Check if the username contains the following string field
+  if (req.body.username != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var username = req.body.username.toLowerCase();
+    query = query + "LOWER(tu.name) LIKE \'%" + username + "%\'";
+
+    console.log("Username found: " + req.body.username);
+  }
+
+  //Retweets field:
+  if (req.body.retweets != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var query_equality = ">";
+
+    if (req.body.retweetequality == "less-than") {
+      query_equality = "<";
+    }
+
+    if (req.body.retweetequality == "equal-to") {
+      query_equality = "=";
+    }
+
+    query = query + "t.retweet_count " + query_equality + " " + req.body.retweets + " ";
+    console.log("Retweets found: " + req.body.retweets);
+  }
+
+  //favorites field:
+  if (req.body.favorites != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var query_equality = ">";
+
+    if (req.body.favoriteequality == "less-than") {
+      query_equality = "<";
+    }
+
+    if (req.body.favoriteequality == "equal-to") {
+      query_equality = "=";
+    }
+
+    query = query + "t.favorite_count " + query_equality + " " + req.body.favorites + " ";
+    console.log("Favorites found: " + req.body.favorites);
+  }
+
+  //Check if the region contains the following string field
+  if (req.body.region != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var region = req.body.region.toLowerCase();
+    query = query + "LOWER(t.place) LIKE \'%" + region + "%\'";
+
+    console.log("Region found: " + req.body.region);
+  }
+
+  //languages field:
+  if (req.body.languagetypes != "any") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var language = "";
+
+    if (req.body.languagetypes == "english") {
+      language = "en";
+    }
+    if (req.body.languagetypes == "spanish") {
+      language = "es";
+    }
+
+    query = query + "t.langauge = \'" + language + "\' ";
+    console.log("Language found: " + req.body.languagetypes);
+  }
+
+    if (exists) {
       var data = { values:"", headers:""};
     	queryOracle(query, data, res, false);
     }

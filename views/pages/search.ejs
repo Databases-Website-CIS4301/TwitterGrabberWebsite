@@ -57,11 +57,13 @@
             <h5>Retweets:</h5>
             <div class="row">
                 <div class="col-sm-2 left-side">
-                    <select name="retweet-equality">
+                    <select name="retweetequality">
                       <option value="greater-than">Greater than</option>
                       <option value="less-than">Less than</option>
                       <option value="equal-to">Equal to</option>
+                      
                     </select>
+
                 </div>
                 <div class="col-sm-9 right-side">
                     <input type="number" name="retweets" size="75"class="form-control" value= "" >
@@ -72,7 +74,7 @@
             <h5>Favorites:</h5>
             <div class="row">
                 <div class="col-sm-2 left-side">
-                    <select name="favorite-equality">
+                    <select name="favoriteequality">
                       <option value="greater-than">Greater than</option>
                       <option value="less-than">Less than</option>
                       <option value="equal-to">Equal to</option>
@@ -87,15 +89,17 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h5>Region:</h5>
+                    <input type="text" name="region" size="75" class="form-control" value= "" >
                 </div>
             </div>
 
             <!-- Language input -->
             <div class="row">
                 <div class="col-sm-12">
-                    <input type="text" name="region" size="75" class="form-control" value= "" >
+                    
                     <h5>Language:</h5>
-                    <select name="language-types">
+                    <select name="languagetypes">
+                      <option value="any">Any</option>
                       <option value="english">English</option>
                       <option value="spanish">Spanish</option>
                     </select>

@@ -19,14 +19,15 @@
                     
                     <table border="1" width="100%">
    <tr>
-      <th>Tweet Text</th><th>Retweets</th><th>Favorites</th>
+      <th>User Name</th><th>Tweet Text</th><th>Retweets</th><th>Favorites</th>
    </tr>
 
    <% for (var i = 0; i < data.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
     <tr>
-      <td width="50%"><%= data[i][2] %></td>
-      <td width="25%"><%= data[i][5] %></td>
-      <td width="25%"><%= data[i][6] %></td>
+      <td width="25%"><%= data[i][1] %></td>
+      <td width="25%"><%= data[i][8] %></td>
+      <td width="25%"><%= data[i][11] %></td>
+      <td width="25%"><%= data[i][12] %></td>
     </tr>    
    <% } %>
 </table>
