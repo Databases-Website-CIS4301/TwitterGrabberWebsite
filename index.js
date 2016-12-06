@@ -38,6 +38,31 @@ app.get('/search', function(req, res) {
 });
 
 app.post('/submit', function (req, res) {
+  //Tweet search:
+
+    console.log(req.body.type_drop);
+  if (req.body.type_drop == "tweets") {
+    tweetQuery(req, res);
+  } else {
+    userQuery(req, res);
+  }
+  
+});
+
+app.post('/raw_query', function (req, res) {
+    console.log("Query: " + req.body.query);
+
+    if (req.body.query != null) {
+      var data = { values:"", headers:""};
+      queryOracle(req.body.query, data, res, true);
+    }
+});
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
+
+function tweetQuery(req, res) {
   var query = null;
   //This variable is for seeing if we need to append our first select statement.
   var exists = false;
@@ -157,25 +182,93 @@ app.post('/submit', function (req, res) {
 
     if (exists) {
       var data = { values:"", headers:""};
-    	queryOracle(query, data, res, false);
+      queryOracle(query, data, res, false, false);
     }
-});
+}
 
-app.post('/raw_query', function (req, res) {
-    console.log("Query: " + req.body.query);
+function userQuery(req, res) {
+  //This variable is for seeing if we need to append our first select statement.
+  var exists = false;
+  var query = "SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE ";
 
-    if (req.body.query != null) {
+  //Check if the username contains the following string field
+  if (req.body.username_users != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var username = req.body.username_users.toLowerCase();
+    query = query + "LOWER(tu.name) LIKE \'%" + username + "%\'";
+
+    console.log("Username found: " + req.body.username_users);
+  }
+
+  //followers field:
+  if (req.body.followers != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var followersEquality = ">";
+
+    if (req.body.followersequality == "less-than") {
+      followersEquality = "<";
+    }
+
+    if (req.body.followersequality == "equal-to") {
+      followersEquality = "=";
+    }
+
+    query = query + "tu.follower_count " + followersEquality + " " + req.body.followers + " ";
+    console.log("Followers found: " + req.body.followers);
+  }
+
+  //Check if the region contains the following string field
+  if (req.body.region_users != "") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var region = req.body.region_users.toLowerCase();
+    query = query + "LOWER(t.place) LIKE \'%" + region + "%\'";
+
+    console.log("Region found: " + req.body.region_users);
+  }
+
+  //languages field:
+  if (req.body.languagetypes_users != "any") {
+    if (exists) {
+      query = query + "AND "
+    } else {
+      exists = true;
+    }
+
+    var language = "";
+
+    if (req.body.languagetypes_users == "english") {
+      language = "en";
+    }
+    if (req.body.languagetypes_users == "spanish") {
+      language = "es";
+    }
+
+    query = query + "tu.langauge = \'" + language + "\' ";
+    console.log("Language found: " + req.body.languagetypes_users);
+  }
+
+    if (exists) {
       var data = { values:"", headers:""};
-      queryOracle(req.body.query, data, res, true);
+      queryOracle(query, data, res, false, true);
     }
-});
+}
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
-
-
-function queryOracle(queryString, temp, res, raw) {
+function queryOracle(queryString, temp, res, raw, users) {
   oracledb.getConnection({  
      user: config.database.user,
      password: config.database.password,
@@ -195,20 +288,22 @@ function queryOracle(queryString, temp, res, raw) {
           }  
           //console.log(result.metaData);  
           //console.log(result.rows); 
+
+
           temp.headers = result.metaData;
           temp.values = result.rows;
           doRelease(connection);  
-          renderSubmitPage(temp, res, raw);
+          renderSubmitPage(temp, res, raw, users);
      });  
 });  
 }
 
-function renderSubmitPage(data, res, raw) {
+function renderSubmitPage(data, res, raw, users) {
       console.log(data);
       if (raw) {
       res.render('pages/dataRaw', {'data' : data.values, 'headers' : data.headers});
       } else {
-      res.render('pages/data', {'data' : data.values, 'headers' : data.headers});
+      res.render('pages/data', {'data' : data.values, 'headers' : data.headers, 'users' : users});
       }
 }
 function doRelease(connection) {  

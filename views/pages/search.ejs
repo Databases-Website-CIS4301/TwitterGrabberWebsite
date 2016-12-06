@@ -2,29 +2,52 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<% var strType = "test"; %>
 <head>
     <% include ../partials/head %>
+        <script>
+
+            var f2 = document.getElementById("form2");
+            function change() {
+                var e = document.getElementById("type_drop");
+                var text = e.options[e.selectedIndex].text;
+                var f1 = document.getElementById("form1");
+                var f2 = document.getElementById("form2");
+
+                if (text == "Tweets") {
+                    f1.style.display = 'block';
+                    f2.style.display = 'none';
+                } else {
+                    f1.style.display = 'none';
+                    f2.style.display = 'block';
+                }
+            }
+        </script>
 </head>
 <body class="container">
 
     <header>
         <% include ../partials/header %>
     </header>
+    
 
     <main>
+        
         <div class="jumbotron">
             <!-- Row for top navigation -->
             <div class="row">
-                <div class="col-sm-6">
-                    <h3>Type of Search:</h3>
+                <div class="col-sm-12">
+                    <h3 id="typeText">Query Type</h3>
                     <form method="post" action="/submit">
-                    <select name="type left-side">
+                    <div name="type left-side">
+                    <select id= "type_drop" name="type_drop" onchange="change();">
                       <option value="tweets">Tweets</option>
                       <option value="users">Users</option>
                     </select>
+                    <div>
                 </div>
                 <!-- Interesting queries -->
-                <div class="col-sm-6 text-right">
+                <!-- <div class="col-sm-6 text-right">
                     <h3>Interesting Queries:</h3>
                     <select name="queries">
                       <option value="query1">Query 1</option>
@@ -33,9 +56,10 @@
                       <option value="query4">Query 4</option>
                       <option value="query5">Query 5</option>
                     </select>
-                </div>
+                </div> -->
             </div>
-
+            <!-- FORM 1 HTML: -->
+            <div id="form1" >
 
             <!-- Key words input -->
             <div class="row">
@@ -65,7 +89,7 @@
                     </select>
 
                 </div>
-                <div class="col-sm-9 right-side">
+                <div class="col-sm-5">
                     <input type="number" name="retweets" size="75"class="form-control" value= "" >
                 </div>
             </div>
@@ -80,7 +104,7 @@
                       <option value="equal-to">Equal to</option>
                     </select>
                 </div>
-                <div class="col-sm-9 right-side">
+                <div class="col-sm-5">
                     <input type="text" name="favorites" size="75" class="form-control" value= "" >
                 </div>
             </div>
@@ -111,6 +135,62 @@
             <!-- Submit button -->
             <input type="submit" value="Search">
             </form>
+
+            </div>
+
+            <!-- FORM 2 HTML: -->
+            <div id="form2" style="display: none;">
+                <form method="post" action="/submit">
+            <!-- User name input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Username Contains:</h5>
+                    <input type="text" name="username_users" size="75" class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- followers input -->
+            <h5>Followers:</h5>
+            <div class="row">
+                <div class="col-sm-2 left-side">
+                    <select name="followersequality">
+                      <option value="greater-than">Greater than</option>
+                      <option value="less-than">Less than</option>
+                      <option value="equal-to">Equal to</option>
+                    </select>
+                </div>
+                <div class="col-sm-9 right-side">
+                    <input type="text" name="followers" size="75" class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- Region input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Region:</h5>
+                    <input type="text" name="region_users" size="75" class="form-control" value= "" >
+                </div>
+            </div>
+
+            <!-- Language input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    
+                    <h5>Language:</h5>
+                    <select name="languagetypes_users">
+                      <option value="any">Any</option>
+                      <option value="english">English</option>
+                      <option value="spanish">Spanish</option>
+                    </select>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- Submit button -->
+            <input type="submit" value="Search">
+
+            </div>
 
             <h3>Raw Query:</h3>
             <form method="post" action="/raw_query">
