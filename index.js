@@ -54,7 +54,7 @@ app.post('/raw_query', function (req, res) {
 
     if (req.body.query != null) {
       var data = { values:"", headers:""};
-      queryOracle(req.body.query, data, res, true);
+      queryOracle(req.body.query, data, res, true, false);
     }
 });
 

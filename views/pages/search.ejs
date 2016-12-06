@@ -22,6 +22,39 @@
                     f2.style.display = 'block';
                 }
             }
+
+            function queryChanged() {
+                var e = document.getElementById("queries");
+                var text = e.options[e.selectedIndex].text;
+                var box = document.getElementById("raw_query");
+                var desc = document.getElementById("queryText");
+
+                if (text == "Query 1") {
+                    box.value = 'SELECT name, COUNT(sender_id) as Biggest_Talkers FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id) GROUP BY name ORDER BY 2 desc';
+                    desc.innerText = "This will show which users on twitter were the biggest talkers, i.e who had the most tweets relevant to the debates.";
+                }
+                if (text == "Query 2") {
+                    box.value = 'SELECT name, COUNT(sender_id) as Tweets_Over_1k_Retweets FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE t.retweet_count>1000) GROUP BY name ORDER BY 2 desc';
+                    desc.innerText = "This query will show the count of tweets with over 1k retweets from each user in descending order.";
+                }
+                if (text == "Query 3") {
+                    box.value = '';
+                    desc.innerText = "";
+                }
+                if (text == "Query 4") {
+                    box.value = '';
+                    desc.innerText = "";
+                }
+                if (text == "Query 5") {
+                    box.value = '';
+                    desc.innerText = "";
+                }
+                if (text == "Query 6") {
+                    box.value = '';
+                    desc.innerText = "";
+                }
+
+            }
         </script>
 </head>
 <body class="container">
@@ -44,19 +77,10 @@
                       <option value="tweets">Tweets</option>
                       <option value="users">Users</option>
                     </select>
-                    <div>
+                    </div>
+                    
                 </div>
-                <!-- Interesting queries -->
-                <!-- <div class="col-sm-6 text-right">
-                    <h3>Interesting Queries:</h3>
-                    <select name="queries">
-                      <option value="query1">Query 1</option>
-                      <option value="query2">Query 2</option>
-                      <option value="query3">Query 3</option>
-                      <option value="query4">Query 4</option>
-                      <option value="query5">Query 5</option>
-                    </select>
-                </div> -->
+                
             </div>
             <!-- FORM 1 HTML: -->
             <div id="form1" >
@@ -189,14 +213,29 @@
 
             <!-- Submit button -->
             <input type="submit" value="Search">
-
+        </form>
             </div>
 
             <h3>Raw Query:</h3>
             <form method="post" action="/raw_query">
-                <input type="text" name="query" size="75" class="form-control" value= "select count (*) as total from TWEET">
+                <input id="raw_query" type="text" name="query" size="75" class="form-control" value= "select count (*) as total from TWEET">
 
                 <br />
+
+                <!-- Interesting queries -->
+                    <h3>Interesting Queries:</h3>
+                    <select id="queries" name="queries" onchange="queryChanged();">
+                      <option value="noquery">Interesting Queries</option>
+                      <option value="query1">Query 1</option>
+                      <option value="query2">Query 2</option>
+                      <option value="query3">Query 3</option>
+                      <option value="query4">Query 4</option>
+                      <option value="query5">Query 5</option>
+                      <option value="query6">Query 6</option>
+                    </select>
+
+                    <h5 id="queryText" style="color:red"></h5>
+
 
                 <input type="submit" value="Search">
             </form>
