@@ -54,7 +54,7 @@
     "install": "node-gyp rebuild"
   },
   "engines": {
-    "node": ">=0.10.28 <7"
+    "node": "6.4.0"
   },
   "maintainers": [
     {

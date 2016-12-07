@@ -2,7 +2,7 @@ module.exports = require('./lib/oracledb.js');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-var config = require('./config')
+var config = require('./config');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))

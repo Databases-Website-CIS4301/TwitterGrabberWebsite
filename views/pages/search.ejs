@@ -35,23 +35,23 @@
                 }
                 if (text == "Query 2") {
                     box.value = 'SELECT name, COUNT(sender_id) as Tweets_Over_1k_Retweets FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE t.retweet_count>1000) GROUP BY name ORDER BY 2 desc';
-                    desc.innerText = "This query will show the count of tweets with over 1k retweets from each user in descending order.";
+                    desc.innerText = "This query will show the count of tweets with over 1k retweets from each user in descending order. This will show who is having the most impact on twitter in terms of popularity.";
                 }
                 if (text == "Query 3") {
-                    box.value = '';
-                    desc.innerText = "";
+                    box.value = 'SELECT place, COUNT(sender_id) FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id) GROUP BY place ORDER BY 2 desc';
+                    desc.innerText = "This query will list the location where the most tweets came from. Unfortunately most people do not share their location when they tweet so this data is not very useful.";
                 }
                 if (text == "Query 4") {
-                    box.value = '';
-                    desc.innerText = "";
+                    box.value = 'SELECT COUNT(sender_id) as Num_Tweets_During_Debate FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE t.created_at > to_timestamp(\'26-09-2016 21:00:00\', \'dd-mm-yyyy hh24:mi:ss\') and t.created_at < to_timestamp(\'26-09-2016 22:30:00\', \'dd-mm-yyyy hh24:mi:ss\'))';
+                    desc.innerText = "This query will show all the tweets made during the time that the debate was happening. This will show how much people were using social media specifically during debate time.";
                 }
                 if (text == "Query 5") {
-                    box.value = '';
-                    desc.innerText = "";
+                    box.value = 'SELECT name as Sender, tweet_text, retweet_count as Retweets FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id) ORDER BY 3 desc';
+                    desc.innerText = "This query shows which had the most retweets out of all the retweets during the presidential debate and shows which tweet most Americans agreed with.";
                 }
                 if (text == "Query 6") {
-                    box.value = '';
-                    desc.innerText = "";
+                    box.value = 'SELECT (SELECT COUNT(sender_id) as Trump_Hashtags FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE LOWER(t.tweet_text) LIKE \'%#makeamericagreatagain%\' or LOWER(t.tweet_text) LIKE \'%#maga%\')) as Trump_Hashtags, (SELECT COUNT(sender_id) as Trump_Hashtags FROM (SELECT * from TWITTERUSER tu join TWEET t on tu.user_id = sender_id WHERE LOWER(t.tweet_text) LIKE \'%#sheswithus%\' or LOWER(t.tweet_text) LIKE \'%#imwithher%\')) as Hillary_Hashtags from dual';
+                    desc.innerText = "This query will give a count of how many times each presidential candidate's hashtag was used in a tweet.";
                 }
 
             }
